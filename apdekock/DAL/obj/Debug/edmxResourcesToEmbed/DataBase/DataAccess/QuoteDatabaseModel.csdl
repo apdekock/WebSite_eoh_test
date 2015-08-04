@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeId" />
+    </Key>
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="EmployeeRoles" Relationship="DatabaseModel.FK__EmployeeR__Emplo__4AB81AF0" FromRole="Employee" ToRole="EmployeeRole" />
+  </EntityType>
+  <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Roles" EntityType="DatabaseModel.Role" />
+    <EntitySet Name="EmployeeRoles" EntityType="DatabaseModel.EmployeeRole" />
+    <AssociationSet Name="FK__EmployeeR__Emplo__4AB81AF0" Association="DatabaseModel.FK__EmployeeR__Emplo__4AB81AF0">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeeRole" EntitySet="EmployeeRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EmployeeR__RoleI__4BAC3F29" Association="DatabaseModel.FK__EmployeeR__RoleI__4BAC3F29">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="EmployeeRole" EntitySet="EmployeeRoles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Role1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BaseRate" Type="Double" Nullable="false" />
+    <NavigationProperty Name="EmployeeRoles" Relationship="DatabaseModel.FK__EmployeeR__RoleI__4BAC3F29" FromRole="Role" ToRole="EmployeeRole" />
+  </EntityType>
+  <EntityType Name="EmployeeRole">
+    <Key>
+      <PropertyRef Name="EmployeeRoleId" />
+    </Key>
+    <Property Name="EmployeeRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="DatabaseModel.FK__EmployeeR__Emplo__4AB81AF0" FromRole="EmployeeRole" ToRole="Employee" />
+    <NavigationProperty Name="Role" Relationship="DatabaseModel.FK__EmployeeR__RoleI__4BAC3F29" FromRole="EmployeeRole" ToRole="Role" />
+  </EntityType>
+  <Association Name="FK__EmployeeR__Emplo__4AB81AF0">
+    <End Type="DatabaseModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="DatabaseModel.EmployeeRole" Role="EmployeeRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeId" />
+      </Principal>
+      <Dependent Role="EmployeeRole">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EmployeeR__RoleI__4BAC3F29">
+    <End Type="DatabaseModel.Role" Role="Role" Multiplicity="1" />
+    <End Type="DatabaseModel.EmployeeRole" Role="EmployeeRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="EmployeeRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
